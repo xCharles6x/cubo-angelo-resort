@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cubo Angelo Resort – Porac, Pampanga</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --forest:    #1a3a2e;
+      --palm:      #2d6a4f;
+      --leaf:      #52b788;
+      --mist:      #b7e4c7;
+      --sky:       #0077b6;
+      --lagoon:    #00b4d8;
+      --sand:      #f8f4ec;
+      --warm:      #e9c46a;
+      --white:     #ffffff;
+      --text-dark: #1a2e25;
+      --text-mid:  #3a5a47;
+      --radius:    14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--sand);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* ─── TYPOGRAPHY ─── */
+    h1,h2,h3,h4 { font-family: 'Cormorant Garamond', serif; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6vw;
+      height: 68px;
+      background: rgba(26,58,46,0.93);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 2px 24px rgba(0,0,0,0.18);
+      transition: background 0.4s;
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--warm);
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      line-height: 1.1;
+    }
+    .nav-logo span { display: block; font-size: 0.65rem; font-family: 'Jost', sans-serif; font-weight: 300; color: var(--mist); letter-spacing: 0.15em; text-transform: uppercase; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--mist); text-decoration: none; font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 400; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--warm); }
+    .nav-cta {
+      background: var(--warm); color: var(--forest); font-size: 0.8rem; font-weight: 600;
+      padding: 0.55rem 1.4rem; border-radius: 50px; text-decoration: none;
+      letter-spacing: 0.08em; text-transform: uppercase; transition: background 0.2s, transform 0.2s;
+    }
+    .nav-cta:hover { background: #f4d68a; transform: translateY(-1px); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 24px; height: 2px; background: var(--mist); border-radius: 2px; transition: 0.3s; }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100vh;
+      background:
+        linear-gradient(160deg, rgba(26,58,46,0.72) 0%, rgba(0,119,182,0.38) 60%, rgba(26,58,46,0.80) 100%),
+        url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 120px 5vw 80px;
+      position: relative; overflow: hidden;
+    }
+    #hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-block; background: rgba(233,196,106,0.18); border: 1px solid rgba(233,196,106,0.5);
+      color: var(--warm); font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase;
+      padding: 0.4rem 1.2rem; border-radius: 50px; margin-bottom: 1.8rem;
+      animation: fadeUp 0.8s ease both;
+    }
+    #hero h1 {
+      font-size: clamp(2.6rem, 6.5vw, 5.2rem);
+      font-weight: 300; color: var(--white); line-height: 1.12;
+      max-width: 860px; margin-bottom: 1.4rem;
+      animation: fadeUp 0.9s 0.15s ease both;
+      text-shadow: 0 4px 32px rgba(0,0,0,0.3);
+    }
+    #hero h1 em { font-style: italic; color: var(--warm); }
+    .hero-sub {
+      font-size: clamp(0.95rem, 2vw, 1.15rem); color: rgba(255,255,255,0.82);
+      max-width: 560px; font-weight: 300; line-height: 1.7;
+      margin-bottom: 2.8rem;
+      animation: fadeUp 1s 0.3s ease both;
+    }
+    .hero-btns {
+      display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;
+      animation: fadeUp 1s 0.45s ease both;
+    }
+    .btn-primary {
+      background: var(--warm); color: var(--forest); padding: 0.9rem 2.4rem;
+      border-radius: 50px; font-size: 0.88rem; font-weight: 600; text-decoration: none;
+      letter-spacing: 0.08em; text-transform: uppercase; border: none; cursor: pointer;
+      transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
+      box-shadow: 0 6px 24px rgba(233,196,106,0.35);
+    }
+    .btn-primary:hover { background: #f4d68a; transform: translateY(-3px); box-shadow: 0 10px 30px rgba(233,196,106,0.45); }
+    .btn-outline {
+      background: transparent; color: var(--white); padding: 0.9rem 2.4rem;
+      border-radius: 50px; font-size: 0.88rem; font-weight: 500; text-decoration: none;
+      letter-spacing: 0.08em; text-transform: uppercase; border: 2px solid rgba(255,255,255,0.55);
+      transition: background 0.25s, border-color 0.25s, transform 0.25s;
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.12); border-color: var(--white); transform: translateY(-3px); }
+    .scroll-hint {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      color: rgba(255,255,255,0.5); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+      animation: fadeUp 1s 0.8s ease both;
+    }
+    .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent); animation: scrollPulse 1.8s infinite; }
+
+    /* ─── SECTION COMMON ─── */
+    section { padding: 96px 6vw; }
+    .section-label {
+      font-size: 0.7rem; font-family: 'Jost', sans-serif; font-weight: 600;
+      letter-spacing: 0.28em; text-transform: uppercase; color: var(--leaf);
+      margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 300; line-height: 1.18;
+      color: var(--forest); margin-bottom: 1.2rem;
+    }
+    .section-title em { font-style: italic; color: var(--palm); }
+    .divider { width: 56px; height: 3px; background: linear-gradient(90deg, var(--leaf), var(--lagoon)); border-radius: 2px; margin-bottom: 2rem; }
+    .text-body { font-size: 1rem; line-height: 1.8; color: var(--text-mid); max-width: 680px; font-weight: 300; }
+
+    /* ─── ABOUT ─── */
+    #about { background: var(--white); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .about-img-stack { position: relative; height: 520px; }
+    .about-img-main {
+      position: absolute; top: 0; left: 0; width: 78%; height: 86%;
+      border-radius: var(--radius); object-fit: cover;
+      box-shadow: 0 20px 60px rgba(26,58,46,0.18);
+    }
+    .about-img-accent {
+      position: absolute; bottom: 0; right: 0; width: 52%; height: 54%;
+      border-radius: var(--radius); object-fit: cover;
+      box-shadow: 0 12px 40px rgba(0,119,182,0.2);
+      border: 4px solid var(--white);
+    }
+    .about-tag {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      background: var(--warm); color: var(--forest); padding: 0.9rem 1.4rem;
+      border-radius: var(--radius); text-align: center; z-index: 2;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+    .about-tag .big { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 600; display: block; line-height: 1; }
+    .about-tag .small { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .about-highlights { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+    .highlight-item { display: flex; align-items: flex-start; gap: 1rem; }
+    .hi-icon { width: 42px; height: 42px; background: var(--mist); border-radius: 10px; display: grid; place-items: center; flex-shrink: 0; font-size: 1.2rem; }
+    .hi-text h4 { font-size: 1rem; font-weight: 600; font-family: 'Jost', sans-serif; color: var(--forest); margin-bottom: 0.2rem; }
+    .hi-text p { font-size: 0.88rem; color: var(--text-mid); line-height: 1.6; }
+
+    /* ─── AMENITIES ─── */
+    #amenities { background: linear-gradient(135deg, var(--forest) 0%, #0d2b1f 100%); }
+    #amenities .section-label { color: var(--leaf); }
+    #amenities .section-title { color: var(--white); }
+    #amenities .text-body { color: rgba(255,255,255,0.65); }
+    #amenities .divider { background: linear-gradient(90deg, var(--leaf), var(--lagoon)); }
+    .amenities-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.4rem; margin-top: 3rem; }
+    .amenity-card {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius); padding: 2rem 1.5rem; text-align: center;
+      transition: background 0.3s, transform 0.3s, border-color 0.3s;
+      cursor: default;
+    }
+    .amenity-card:hover { background: rgba(255,255,255,0.11); transform: translateY(-6px); border-color: rgba(82,183,136,0.4); }
+    .amenity-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+    .amenity-card h3 { font-size: 1.05rem; font-family: 'Jost', sans-serif; font-weight: 500; color: var(--white); margin-bottom: 0.5rem; }
+    .amenity-card p { font-size: 0.82rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+    /* ─── RATES ─── */
+    #rates { background: var(--sand); }
+    .rates-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem; }
+    .rate-card {
+      background: var(--white); border-radius: 20px; overflow: hidden;
+      box-shadow: 0 8px 40px rgba(26,58,46,0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+    }
+    .rate-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(26,58,46,0.14); }
+    .rate-card.featured { border: 2px solid var(--leaf); }
+    .rate-badge {
+      position: absolute; top: 1.2rem; right: 1.2rem;
+      background: var(--leaf); color: var(--white); font-size: 0.65rem;
+      font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.3rem 0.8rem; border-radius: 50px;
+    }
+    .rate-header { padding: 2rem 2rem 1.5rem; background: linear-gradient(135deg, var(--forest), #1a5c3a); }
+    .rate-type { font-size: 0.68rem; color: var(--mist); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.4rem; }
+    .rate-title { font-size: 1.5rem; color: var(--white); font-weight: 300; }
+    .rate-price { padding: 1.5rem 2rem; border-bottom: 1px solid #f0ede6; }
+    .price-row { display: flex; align-items: baseline; gap: 0.4rem; }
+    .price-from { font-size: 0.75rem; color: var(--text-mid); }
+    .price-amount { font-family: 'Cormorant Garamond', serif; font-size: 2.6rem; font-weight: 600; color: var(--forest); line-height: 1; }
+    .price-suffix { font-size: 0.8rem; color: var(--text-mid); }
+    .rate-features { padding: 1.5rem 2rem 2rem; }
+    .rate-features ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+    .rate-features li { display: flex; align-items: center; gap: 0.7rem; font-size: 0.88rem; color: var(--text-mid); }
+    .rate-features li::before { content: '✓'; color: var(--leaf); font-weight: 700; flex-shrink: 0; }
+    .rate-book { display: block; margin: 0 2rem 2rem; text-align: center; background: var(--warm); color: var(--forest); font-size: 0.82rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.85rem; border-radius: 50px; text-decoration: none; transition: background 0.2s, transform 0.2s; }
+    .rate-book:hover { background: #f4d68a; transform: translateY(-2px); }
+
+    /* ─── GALLERY ─── */
+    #gallery { background: var(--white); }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 240px);
+      gap: 1rem; margin-top: 3rem;
+    }
+    .gallery-item {
+      border-radius: var(--radius); overflow: hidden; position: relative; cursor: pointer;
+    }
+    .gallery-item:first-child { grid-column: span 2; }
+    .gallery-item:nth-child(4) { grid-column: span 2; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.55s ease; display: block; }
+    .gallery-item:hover img { transform: scale(1.07); }
+    .gallery-overlay {
+      position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,58,46,0.55) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.3s;
+      display: flex; align-items: flex-end; padding: 1.2rem;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-label { color: var(--white); font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+    /* ─── BOOKING ─── */
+    #booking { background: linear-gradient(160deg, #eaf7f0 0%, var(--sand) 100%); }
+    .booking-wrap { display: grid; grid-template-columns: 1fr 1.3fr; gap: 4rem; align-items: start; }
+    .booking-info .contact-item { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.4rem; }
+    .contact-icon { width: 44px; height: 44px; background: var(--palm); border-radius: 10px; display: grid; place-items: center; font-size: 1.1rem; flex-shrink: 0; }
+    .contact-text h4 { font-family: 'Jost', sans-serif; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-mid); margin-bottom: 0.15rem; }
+    .contact-text a, .contact-text p { font-size: 0.95rem; color: var(--forest); text-decoration: none; font-weight: 500; }
+    .contact-text a:hover { color: var(--palm); }
+    .booking-form { background: var(--white); border-radius: 20px; padding: 2.5rem; box-shadow: 0 8px 48px rgba(26,58,46,0.10); }
+    .booking-form h3 { font-size: 1.6rem; color: var(--forest); margin-bottom: 0.3rem; }
+    .form-sub { font-size: 0.85rem; color: var(--text-mid); margin-bottom: 2rem; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    label { display: block; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-mid); margin-bottom: 0.45rem; font-weight: 500; }
+    input, select, textarea {
+      width: 100%; padding: 0.85rem 1rem; border: 1.5px solid #e4e0d8; border-radius: 10px;
+      font-family: 'Jost', sans-serif; font-size: 0.92rem; color: var(--text-dark); background: #fafaf8;
+      transition: border-color 0.2s, box-shadow 0.2s; outline: none;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--leaf); box-shadow: 0 0 0 3px rgba(82,183,136,0.12); background: var(--white); }
+    textarea { resize: vertical; min-height: 110px; }
+    .submit-btn {
+      width: 100%; background: linear-gradient(135deg, var(--palm), var(--forest)); color: var(--white);
+      border: none; padding: 1rem; border-radius: 50px; font-size: 0.88rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 6px 24px rgba(45,106,79,0.3);
+    }
+    .submit-btn:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(45,106,79,0.35); }
+    .form-note { text-align: center; font-size: 0.75rem; color: var(--text-mid); margin-top: 1rem; }
+
+    /* ─── LOCATION ─── */
+    #location { background: var(--forest); }
+    #location .section-label { color: var(--leaf); }
+    #location .section-title { color: var(--white); }
+    #location .divider { background: linear-gradient(90deg, var(--leaf), var(--lagoon)); }
+    .location-wrap { display: grid; grid-template-columns: 1fr 1.6fr; gap: 3rem; align-items: center; margin-top: 3rem; }
+    .location-info p { color: rgba(255,255,255,0.7); font-size: 0.95rem; line-height: 1.8; margin-bottom: 1.5rem; }
+    .location-detail { display: flex; align-items: flex-start; gap: 0.9rem; margin-bottom: 1rem; }
+    .loc-icon { font-size: 1.1rem; margin-top: 0.15rem; }
+    .loc-text { font-size: 0.88rem; color: rgba(255,255,255,0.7); line-height: 1.5; }
+    .loc-text strong { color: var(--mist); font-weight: 500; display: block; margin-bottom: 0.15rem; }
+    .map-frame {
+      border-radius: var(--radius); overflow: hidden;
+      box-shadow: 0 16px 60px rgba(0,0,0,0.3);
+      height: 380px; position: relative;
+      background: #1e4a38;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .map-frame iframe { width: 100%; height: 100%; border: none; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #0f1f18; padding: 3rem 6vw 2rem;
+    }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 3rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .footer-brand .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--warm); font-weight: 600; display: block; margin-bottom: 0.3rem; }
+    .footer-brand .tagline { font-size: 0.75rem; color: rgba(255,255,255,0.4); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1.2rem; }
+    .footer-brand p { font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.7; }
+    .footer-col h4 { font-family: 'Jost', sans-serif; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--leaf); margin-bottom: 1rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-col ul a { font-size: 0.85rem; color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.2s; }
+    .footer-col ul a:hover { color: var(--mist); }
+    .social-links { display: flex; gap: 0.8rem; margin-top: 1.5rem; }
+    .social-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.65); font-size: 0.8rem; padding: 0.55rem 1rem; border-radius: 50px;
+      text-decoration: none; transition: background 0.2s, color 0.2s;
+    }
+    .social-btn:hover { background: rgba(255,255,255,0.13); color: var(--white); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; }
+    .footer-bottom p { font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+    .footer-bottom a { color: rgba(255,255,255,0.35); text-decoration: none; font-size: 0.78rem; }
+
+    /* ─── FLOATING CTA ─── */
+    .float-cta {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 200;
+      background: linear-gradient(135deg, var(--palm), var(--forest)); color: var(--white);
+      padding: 0.8rem 1.6rem; border-radius: 50px; text-decoration: none; font-size: 0.82rem;
+      font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      box-shadow: 0 8px 30px rgba(26,58,46,0.4);
+      transition: transform 0.25s, box-shadow 0.25s;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .float-cta:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(26,58,46,0.5); }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes scrollPulse { 0%,100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+
+    /* ─── MOBILE NAV ─── */
+    .mobile-menu {
+      display: none; flex-direction: column; gap: 0;
+      position: fixed; top: 68px; left: 0; right: 0; z-index: 99;
+      background: rgba(26,58,46,0.97); backdrop-filter: blur(12px);
+      padding: 1rem 6vw 2rem; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: var(--mist); text-decoration: none; font-size: 1rem; padding: 0.9rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); letter-spacing: 0.05em; }
+    .mobile-menu a:last-child { border-bottom: none; background: var(--warm); color: var(--forest); text-align: center; border-radius: 8px; margin-top: 1rem; font-weight: 600; padding: 0.9rem; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .about-grid, .booking-wrap, .location-wrap { grid-template-columns: 1fr; }
+      .about-img-stack { height: 320px; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .gallery-item:first-child, .gallery-item:nth-child(4) { grid-column: span 1; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      section { padding: 72px 5vw; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .rates-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .float-cta { bottom: 1rem; right: 1rem; font-size: 0.75rem; padding: 0.7rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <a href="#hero" class="nav-logo">Cubo Angelo<span>Resort · Pampanga, Philippines</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#amenities">Amenities</a></li>
+    <li><a href="#rates">Rates</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#location">Location</a></li>
+  </ul>
+  <a href="#booking" class="nav-cta">Book Now</a>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#amenities" onclick="toggleMenu()">Amenities</a>
+  <a href="#rates" onclick="toggleMenu()">Rates</a>
+  <a href="#gallery" onclick="toggleMenu()">Gallery</a>
+  <a href="#location" onclick="toggleMenu()">Location</a>
+  <a href="#booking" onclick="toggleMenu()">Book Now</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <span class="hero-badge">🌿 Private Resort · Porac, Pampanga</span>
+  <h1>Relax. Celebrate.<br><em>Enjoy Nature</em> at Cubo Angelo Resort</h1>
+  <p class="hero-sub">Your private escape for family getaways, birthday celebrations, reunions, and barkada adventures — surrounded by lush greenery and cool Pampanga air.</p>
+  <div class="hero-btns">
+    <a href="#booking" class="btn-primary">📅 Book Now</a>
+    <a href="#rates" class="btn-outline">View Rates & Packages</a>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-img-stack">
+      <img class="about-img-main" src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=900&q=80" alt="Resort pool" />
+      <img class="about-img-accent" src="https://images.unsplash.com/photo-1540541338287-41700207dee6?w=600&q=80" alt="Cottage" />
+      <div class="about-tag">
+        <span class="big">100%</span>
+        <span class="small">Private Resort</span>
+      </div>
+    </div>
+    <div>
+      <div class="section-label">About the Resort</div>
+      <h2 class="section-title">Your Own <em>Private Paradise</em> in Pampanga</h2>
+      <div class="divider"></div>
+      <p class="text-body">Cubo Angelo Resort is a beautifully designed private resort nestled in the peaceful landscapes of Porac, Pampanga. Whether you're celebrating a milestone birthday, hosting a family reunion, or simply escaping the city with your barkada — we offer a serene, intimate setting that feels like your own personal haven.</p>
+      <div class="about-highlights">
+        <div class="highlight-item">
+          <div class="hi-icon">🔒</div>
+          <div class="hi-text">
+            <h4>Fully Private Booking</h4>
+            <p>The entire resort is yours — no strangers, just your group enjoying quality time together.</p>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <div class="hi-icon">🌿</div>
+          <div class="hi-text">
+            <h4>Nature-Inspired Ambiance</h4>
+            <p>Lush gardens, fresh air, and the tranquil sounds of nature create a truly relaxing retreat.</p>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <div class="hi-icon">🎉</div>
+          <div class="hi-text">
+            <h4>Perfect for Any Occasion</h4>
+            <p>Birthdays, baptisms, team outings, or quiet family weekends — we're set up for it all.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AMENITIES -->
+<section id="amenities">
+  <div class="section-label">What We Offer</div>
+  <h2 class="section-title">Resort <em>Amenities</em></h2>
+  <div class="divider"></div>
+  <p class="text-body">Everything you need for a perfect day or overnight stay — all included in your booking.</p>
+  <div class="amenities-grid">
+    <div class="amenity-card">
+      <div class="amenity-icon">🏊</div>
+      <h3>Swimming Pool</h3>
+      <p>Sparkling clean pool with both shallow and deep sections — perfect for all ages.</p>
+    </div>
+    <div class="amenity-card">
+      <div class="amenity-icon">🛖</div>
+      <h3>Kubo Cottages</h3>
+      <p>Authentic Filipino-style bamboo cottages with a cozy, relaxing atmosphere.</p>
+    </div>
+    <div class="amenity-card">
+      <div class="amenity-icon">🎤</div>
+      <h3>Karaoke & Sound System</h3>
+      <p>Professional sound system and karaoke setup for non-stop entertainment.</p>
+    </div>
+    <div class="amenity-card">
+      <div class="amenity-icon">🔥</div>
+      <h3>Grilling Area</h3>
+      <p>Dedicated outdoor grilling station — bring your lechon, BBQ, and inasal!</p>
+    </div>
+    <div class="amenity-card">
+      <div class="amenity-icon">🚗</div>
+      <h3>Free Parking</h3>
+      <p>Spacious and secure parking area for cars and vans — no hassle, no fees.</p>
+    </div>
+    <div class="amenity-card">
+      <div class="amenity-icon">🌄</div>
+      <h3>Nature Views</h3>
+      <p>Surrounded by lush greenery and scenic mountain views of Pampanga.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RATES -->
+<section id="rates">
+  <div class="section-label">Packages & Pricing</div>
+  <h2 class="section-title">Rates That <em>Fit Your Group</em></h2>
+  <div class="divider"></div>
+  <p class="text-body">Transparent, affordable rates with no hidden fees. Choose the package that works best for your group.</p>
+  <div class="rates-grid">
+    <div class="rate-card">
+      <div class="rate-header">
+        <div class="rate-type">Day Tour</div>
+        <div class="rate-title">Sunshine Package</div>
+      </div>
+      <div class="rate-price">
+        <div class="price-row">
+          <span class="price-from">Starts at</span>
+          <span class="price-amount">₱3,500</span>
+        </div>
+        <span class="price-suffix">/ group (up to 20 pax) · 6AM–6PM</span>
+      </div>
+      <div class="rate-features">
+        <ul>
+          <li>Full pool access (12 hours)</li>
+          <li>2 kubo cottages</li>
+          <li>Grilling area included</li>
+          <li>Free parking</li>
+          <li>Karaoke (₱500 add-on)</li>
+        </ul>
+      </div>
+      <a href="#booking" class="rate-book">Book This Package</a>
+    </div>
+
+    <div class="rate-card featured">
+      <div class="rate-badge">Most Popular</div>
+      <div class="rate-header" style="background: linear-gradient(135deg, #1a5c3a, var(--sky));">
+        <div class="rate-type">Overnight Stay</div>
+        <div class="rate-title">Starlight Package</div>
+      </div>
+      <div class="rate-price">
+        <div class="price-row">
+          <span class="price-from">Starts at</span>
+          <span class="price-amount">₱6,500</span>
+        </div>
+        <span class="price-suffix">/ group (up to 20 pax) · Check-in 2PM / out 12NN</span>
+      </div>
+      <div class="rate-features">
+        <ul>
+          <li>Full pool access (22 hours)</li>
+          <li>3 kubo cottages</li>
+          <li>Grilling area included</li>
+          <li>Karaoke & sound system</li>
+          <li>Free parking</li>
+          <li>Night lighting setup</li>
+        </ul>
+      </div>
+      <a href="#booking" class="rate-book">Book This Package</a>
+    </div>
+
+    <div class="rate-card">
+      <div class="rate-header" style="background: linear-gradient(135deg, #2c3e50, #1a3a2e);">
+        <div class="rate-type">Events & Celebrations</div>
+        <div class="rate-title">Fiesta Package</div>
+      </div>
+      <div class="rate-price">
+        <div class="price-row">
+          <span class="price-from">Starts at</span>
+          <span class="price-amount">₱9,000</span>
+        </div>
+        <span class="price-suffix">/ group (up to 40 pax) · Custom schedule</span>
+      </div>
+      <div class="rate-features">
+        <ul>
+          <li>Full resort exclusive use</li>
+          <li>All cottages & venues</li>
+          <li>Full sound system + karaoke</li>
+          <li>Event setup assistance</li>
+          <li>Extended hours available</li>
+          <li>Custom add-ons welcome</li>
+        </ul>
+      </div>
+      <a href="#booking" class="rate-book">Inquire Now</a>
+    </div>
+  </div>
+  <p style="text-align:center; margin-top:2rem; font-size:0.82rem; color:var(--text-mid);">* Rates are subject to change depending on season and group size. Contact us for a custom quote.</p>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="section-label">Photo Gallery</div>
+  <h2 class="section-title">A Glimpse of <em>Paradise</em></h2>
+  <div class="divider"></div>
+  <div class="gallery-grid">
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=900&q=80" alt="Pool view" />
+      <div class="gallery-overlay"><span class="gallery-label">Swimming Pool</span></div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600&q=80" alt="Cottage" />
+      <div class="gallery-overlay"><span class="gallery-label">Kubo Cottages</span></div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=600&q=80" alt="Night view" />
+      <div class="gallery-overlay"><span class="gallery-label">Night Ambiance</span></div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1567551703064-7b0f14a29296?w=900&q=80" alt="Events" />
+      <div class="gallery-overlay"><span class="gallery-label">Event Setup</span></div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1616046229478-9901c5536a45?w=600&q=80" alt="Garden" />
+      <div class="gallery-overlay"><span class="gallery-label">Garden Area</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section id="booking">
+  <div class="booking-wrap">
+    <div class="booking-info">
+      <div class="section-label">Make a Reservation</div>
+      <h2 class="section-title">Ready to <em>Book?</em></h2>
+      <div class="divider"></div>
+      <p class="text-body" style="margin-bottom:2.5rem;">Fill out the form and we'll get back to you within 24 hours to confirm your booking. You can also reach us directly through the contacts below.</p>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div class="contact-text">
+          <h4>Call or Text</h4>
+          <a href="tel:+639XXXXXXXXX">+63 9XX XXX XXXX</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📘</div>
+        <div class="contact-text">
+          <h4>Facebook Page</h4>
+          <a href="https://facebook.com/cuboangeloresort" target="_blank">facebook.com/cuboangeloresort</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">💬</div>
+        <div class="contact-text">
+          <h4>Messenger</h4>
+          <a href="https://m.me/cuboangeloresort" target="_blank">Message us on Messenger</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div class="contact-text">
+          <h4>Address</h4>
+          <p>Porac, Pampanga, Philippines</p>
+        </div>
+      </div>
+      <div class="social-links">
+        <a href="#" class="social-btn">📘 Facebook</a>
+        <a href="#" class="social-btn">💬 Messenger</a>
+      </div>
+    </div>
+    <div class="booking-form">
+      <h3>Send an Inquiry</h3>
+      <p class="form-sub">We'll confirm your booking within 24 hours.</p>
+      <div class="form-row form-group">
+        <div class="form-group">
+          <label for="fname">Full Name</label>
+          <input type="text" id="fname" placeholder="Juan dela Cruz" />
+        </div>
+        <div class="form-group">
+          <label for="fcontact">Contact Number</label>
+          <input type="tel" id="fcontact" placeholder="+63 9XX XXX XXXX" />
+        </div>
+      </div>
+      <div class="form-row form-group">
+        <div class="form-group">
+          <label for="fdate">Preferred Date</label>
+          <input type="date" id="fdate" />
+        </div>
+        <div class="form-group">
+          <label for="fguests">Number of Guests</label>
+          <input type="number" id="fguests" placeholder="e.g. 20" min="1" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="fpackage">Package Interest</label>
+        <select id="fpackage">
+          <option value="">-- Select a Package --</option>
+          <option>Sunshine Package (Day Tour)</option>
+          <option>Starlight Package (Overnight)</option>
+          <option>Fiesta Package (Events)</option>
+          <option>Custom / Not Sure Yet</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="fmessage">Message / Special Requests</label>
+        <textarea id="fmessage" placeholder="Tell us about your event or any special arrangements you need..."></textarea>
+      </div>
+      <button class="submit-btn" onclick="handleSubmit()">✉️ &nbsp;Send Booking Inquiry</button>
+      <p class="form-note">🔒 Your information is kept private and will never be shared.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION -->
+<section id="location">
+  <div class="section-label">Find Us</div>
+  <h2 class="section-title">How to <em>Get Here</em></h2>
+  <div class="divider"></div>
+  <div class="location-wrap">
+    <div class="location-info">
+      <p>Cubo Angelo Resort is located in the lush, quiet town of Porac in Pampanga — easily accessible from Metro Manila via the NLEX, approximately 1.5 to 2 hours away.</p>
+      <div class="location-detail">
+        <span class="loc-icon">📍</span>
+        <div class="loc-text">
+          <strong>Address</strong>
+          Porac, Pampanga, Philippines
+        </div>
+      </div>
+      <div class="location-detail">
+        <span class="loc-icon">🚗</span>
+        <div class="loc-text">
+          <strong>Via Private Car</strong>
+          NLEX → Dau Exit → MacArthur Highway → Porac direction. Specific address provided upon booking confirmation.
+        </div>
+      </div>
+      <div class="location-detail">
+        <span class="loc-icon">🚌</span>
+        <div class="loc-text">
+          <strong>Via Public Transport</strong>
+          Take a bus to Dau Terminal (Pampanga), then hire a tricycle or jeepney to Porac.
+        </div>
+      </div>
+      <div class="location-detail">
+        <span class="loc-icon">⏱️</span>
+        <div class="loc-text">
+          <strong>Travel Time from Manila</strong>
+          Approximately 1.5 – 2 hours depending on traffic.
+        </div>
+      </div>
+    </div>
+    <div class="map-frame">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d60992.83248219657!2d120.53779!3d15.07085!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3396f2f7c86f6aeb%3A0xf06e3a4e0c8ba2c!2sPorac%2C%20Pampanga!5e0!3m2!1sen!2sph!4v1715000000000"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        title="Cubo Angelo Resort Location - Porac, Pampanga"
+      ></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo">Cubo Angelo Resort</span>
+      <span class="tagline">Porac, Pampanga, Philippines</span>
+      <p>A private resort experience designed for families, barkadas, and celebrations. Your comfort and privacy are our priority.</p>
+      <div class="social-links" style="margin-top:1.5rem;">
+        <a href="#" class="social-btn">📘 Facebook</a>
+        <a href="#" class="social-btn">💬 Messenger</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#amenities">Amenities</a></li>
+        <li><a href="#rates">Rates & Packages</a></li>
+        <li><a href="#gallery">Photo Gallery</a></li>
+        <li><a href="#booking">Book Now</a></li>
+        <li><a href="#location">Location</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Our Packages</h4>
+      <ul>
+        <li><a href="#rates">Sunshine (Day Tour)</a></li>
+        <li><a href="#rates">Starlight (Overnight)</a></li>
+        <li><a href="#rates">Fiesta (Events)</a></li>
+        <li><a href="#booking">Custom Package</a></li>
+      </ul>
+      <div style="margin-top:2rem;">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+639XXXXXXXXX">+63 9XX XXX XXXX</a></li>
+          <li><a href="https://facebook.com/cuboangeloresort" target="_blank">Facebook Page</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Cubo Angelo Resort. All rights reserved.</p>
+    <a href="#hero">Back to Top ↑</a>
+  </div>
+</footer>
+
+<!-- FLOATING CTA -->
+<a href="#booking" class="float-cta" id="float-cta" style="display:none;">📅 Book Now</a>
+
+<script>
+  // Hamburger menu
+  function toggleMenu() {
+    document.getElementById('mobile-menu').classList.toggle('open');
+  }
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById('mobile-menu');
+    const ham = document.getElementById('hamburger');
+    if (!menu.contains(e.target) && !ham.contains(e.target)) {
+      menu.classList.remove('open');
+    }
+  });
+
+  // Show floating CTA after scroll
+  const floatBtn = document.getElementById('float-cta');
+  window.addEventListener('scroll', () => {
+    floatBtn.style.display = window.scrollY > 600 ? 'flex' : 'none';
+  });
+
+  // Fade-in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.amenity-card, .rate-card, .gallery-item, .about-highlights .highlight-item, .contact-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+
+  // Form submit
+  function handleSubmit() {
+    const name = document.getElementById('fname').value.trim();
+    if (!name) { alert('Please enter your name.'); return; }
+    alert('Thank you, ' + name + '! Your inquiry has been sent. We will contact you within 24 hours to confirm your booking at Cubo Angelo Resort. 🌿');
+  }
+</script>
+</body>
+</html>
